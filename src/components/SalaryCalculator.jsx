@@ -49,7 +49,10 @@ function SalaryCalculator() {
 
   return (
     <div className="max-w-7xl">
-      <div className="relative overflow-x-auto rounded">
+      <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
+        Salary Calculator by: <div className="logo"></div>
+      </h1>
+      <div className="relative overflow-x-auto rounded shadow-[0_0_20px_0_#1f2937]">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"></thead>
           <tbody>
@@ -60,10 +63,11 @@ function SalaryCalculator() {
               >
                 Bruto plata
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 {" "}
                 B ={" "}
                 <input
+                  className=""
                   style={{ background: "lightblue" }}
                   value={bruto}
                   type="text"
@@ -85,7 +89,7 @@ function SalaryCalculator() {
               >
                 Ukupni doprinosi
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 {" "}
                 D ={" "}
                 <input
@@ -97,62 +101,62 @@ function SalaryCalculator() {
               </td>
               <td className="px-6 py-4 font-bold">D=B*31%</td>
             </tr>
-            <tr className="bg-white dark:bg-gray-800">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 Doprinosi za PIO
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 PIO = <input readOnly value={pio} type="text" /> KM
               </td>
               <td className="px-6 py-4 font-bold">PIO-18.5%</td>
             </tr>
-            <tr className="bg-white dark:bg-gray-800">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 Doprinosi za ZDR
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 ZDR = <input readOnly value={zdr} type="text" /> KM
               </td>
               <td className="px-6 py-4 font-bold">ZDR-10.2%</td>
             </tr>
-            <tr className="bg-white dark:bg-gray-800">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 Doprinosi za DJ
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 DJ = <input readOnly value={djDoprinosi} type="text" /> KM
               </td>
               <td className="px-6 py-4 font-bold">DJ-1.70%</td>
             </tr>
-            <tr className="bg-white dark:bg-gray-800">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 Doprinosi za NZ
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 NZ = <input readOnly value={nzDprinosi} type="text" /> KM
               </td>
               <td className="px-6 py-4 font-bold">NZ-0.6%</td>
             </tr>
-            <tr className="bg-white dark:bg-gray-800">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 Lični odbitak
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 O ={" "}
                 <input
                   value={stvarniOdbitak}
@@ -165,38 +169,38 @@ function SalaryCalculator() {
               </td>
               <td className="px-6 py-4 font-bold">{`ako je O>B onda je O=B`}</td>
             </tr>
-            <tr className="bg-white dark:bg-gray-800">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 Umanjenje po poreskoj kartici
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 U = <input readOnly value={umanjenje} type="text" /> KM
               </td>
               <td className="px-6 py-4 font-bold">{`ako je O+U>B onda je U=B-O`}</td>
             </tr>
-            <tr className="bg-white dark:bg-gray-800">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 Porez
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 P = <input readOnly value={porez} type="text" /> KM
               </td>
               <td className="px-6 py-4 font-bold">{`P=(B-(O+U))*8%`}</td>
             </tr>
-            <tr className="bg-white dark:bg-gray-800">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 Neto plata:
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 N ={" "}
                 <input
                   value={neto}
@@ -209,31 +213,31 @@ function SalaryCalculator() {
               </td>
               <td className="px-6 py-4 font-bold">N=B-D-P</td>
             </tr>
-            <tr className="bg-white dark:bg-gray-800">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 Doprinos za solidarnost:
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 S = <input readOnly value={solidarnost} type="text" /> KM
               </td>
               <td className="px-6 py-4 font-bold">S=N*0.25%</td>
             </tr>
-            <tr className="bg-white dark:bg-gray-800">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 Isplata radniku:
               </th>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 td-style">
                 I = <input readOnly value={isplata} type="text" /> KM
               </td>
               <td className="px-6 py-4 font-bold">I=N-S</td>
             </tr>
-            <tr className="bg-white dark:bg-gray-800">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
