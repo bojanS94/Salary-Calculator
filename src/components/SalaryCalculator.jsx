@@ -29,7 +29,6 @@ function SalaryCalculator() {
     umanjenje = umanjenje.toFixed(2);
   }
     
-
   //Porez batice...
   let calculatePorez = () => {
     porez = (bruto - (dobitak + umanjenje) * (8 / 100)).toFixed(2);
@@ -202,6 +201,7 @@ function SalaryCalculator() {
         Izracunaj
       </button>
     </div>
+    
   );
 }
 
