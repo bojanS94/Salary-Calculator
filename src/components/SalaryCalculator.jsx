@@ -28,18 +28,17 @@ function SalaryCalculator() {
   let porez = stvarniPorez.toFixed(2);
 
   //Neto plata
-  let stvarniNeto = +(bruto - doprinosi - porez).toFixed(2);
+  neto = +(bruto - doprinosi - porez).toFixed(2);
 
   //Doprinosi za solidarnost
   let solidarnostDoprinosi = neto * (0.25 / 100);
   let solidarnost = solidarnostDoprinosi.toFixed(2);
 
   //Ukupne obaveze
-  let stvarneObaveze = Number(doprinosi + porez + solidarnostDoprinosi);
-  let obaveze = stvarneObaveze.toFixed(2);
+  let obaveze = Number(doprinosi + porez + solidarnostDoprinosi).toFixed(2);
 
   //Isplata radniku
-  let stvarnaIsplata = Number(stvarniNeto - solidarnostDoprinosi);
+  let stvarnaIsplata = Number(neto - solidarnostDoprinosi);
   let isplata = stvarnaIsplata.toFixed(2);
 
   return (
@@ -68,7 +67,7 @@ function SalaryCalculator() {
                   value={bruto}
                   type="text"
                   onChange={(event) => {
-                    let noviBruto = +event.target.value;
+                    const noviBruto = +event.target.value;
                     setBruto(noviBruto);
                   }}
                 />{" "}
@@ -190,7 +189,15 @@ function SalaryCalculator() {
                 Neto plata:
               </th>
               <td className="px-6 py-4 td-style">
-                N = <input value={neto} type="text" onChange={(event) => {}} />{" "}
+                N ={" "}
+                <input
+                  value={neto}
+                  type="text"
+                  onChange={(event) => {
+                    let noviNeto = +event.target.value;
+                    setNeto(noviNeto);
+                  }}
+                />{" "}
                 KM
               </td>
               <td className="px-6 py-4 font-bold">N=B-D-P</td>
