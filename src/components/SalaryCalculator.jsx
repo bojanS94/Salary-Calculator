@@ -45,7 +45,8 @@ function SalaryCalculator() {
   return (
     <div className="max-w-7xl">
       <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
-        Salary Calculator by: <div className="logo"></div>
+        Salary Calculator by:
+        <img className="logo" src="src\assets\logo.webp" alt="" />
       </h1>
       <div className="relative overflow-x-auto rounded shadow-[0_0_20px_0_#1f2937]">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -68,9 +69,7 @@ function SalaryCalculator() {
                   type="text"
                   onChange={(event) => {
                     let noviBruto = +event.target.value;
-                    let noviNeto = +event.target.value;
                     setBruto(noviBruto);
-                    setNeto(noviNeto);
                   }}
                 />{" "}
                 KM
@@ -191,15 +190,7 @@ function SalaryCalculator() {
                 Neto plata:
               </th>
               <td className="px-6 py-4 td-style">
-                N ={" "}
-                <input
-                  value={neto}
-                  type="text"
-                  onChange={(event) => {
-                    let noviNeto = +event.target.value;
-                    setNeto(noviNeto);
-                  }}
-                />{" "}
+                N = <input value={neto} type="text" onChange={(event) => {}} />{" "}
                 KM
               </td>
               <td className="px-6 py-4 font-bold">N=B-D-P</td>
