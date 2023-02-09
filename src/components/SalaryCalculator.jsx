@@ -36,20 +36,16 @@ function SalaryCalculator() {
   let solidarnost = solidarnostDoprinosi.toFixed(2);
 
   //Ukupne obaveze
-  let obaveze = 0;
-  obaveze = Number(doprinosi + porez + solidarnostDoprinosi);
-  obaveze = obaveze.toFixed(2);
+  let stvarneObaveze = Number(doprinosi + porez + solidarnostDoprinosi);
+  let obaveze = stvarneObaveze.toFixed(2);
 
   //Isplata radniku
-  let isplata = +(neto - solidarnostDoprinosi).toFixed(2);
-
-  useEffect(() => {
-    console.log("Ove dvije vrijdnosti su se izmjenile");
-  }, [bruto, neto]);
+  let stvarnaIsplata = Number(stvarniNeto - solidarnostDoprinosi);
+  let isplata = stvarnaIsplata.toFixed(2);
 
   return (
     <div className="max-w-7xl">
-      <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
+      <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
         Salary Calculator by: <div className="logo"></div>
       </h1>
       <div className="relative overflow-x-auto rounded shadow-[0_0_20px_0_#1f2937]">
