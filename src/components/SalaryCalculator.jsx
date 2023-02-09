@@ -1,51 +1,61 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function SalaryCalculator() {
-  let [bruto, setBruto] = useState(1016.39);
-  let [neto, setNeto] = useState(700);
+  const [bruto, setBruto] = useState(1016.39);
+
+  const brutoRef = useRef(null);
+  const netoRef = useRef(null);
 
   //Ukupni doprinosi
-  let doprinosi = ((bruto * 31) / 100).toFixed(2);
+  const doprinosi = (bruto * 31) / 100;
   //Doprinosi za PIO
-  let pio = ((bruto * 18.5) / 100).toFixed(2);
+  const pio = ((bruto * 18.5) / 100).toFixed(2);
   //Doprinosi za ZDR
-  let zdr = ((bruto * 10.2) / 100).toFixed(2);
+  const zdr = ((bruto * 10.2) / 100).toFixed(2);
   //Doprinosi za DJ
-  let djDoprinosi = ((bruto * 1.7) / 100).toFixed(2);
+  const djDoprinosi = ((bruto * 1.7) / 100).toFixed(2);
   //Doprinosi za NZ
-  let nzDprinosi = ((bruto * 0.6) / 100).toFixed(2);
+  const nzDprinosi = ((bruto * 0.6) / 100).toFixed(2);
 
-  //Licni odbitak
-  let odbitak = 1000;
-  if (odbitak > bruto) {
-    odbitak = bruto;
-  }
+  // Licni odbitak
+  const odbitak = 1000;
 
-  //Umanjenje po poreskoj kartici
-  let umanjenje = Math.min(bruto - odbitak, 0.0);
-  if (odbitak + umanjenje > bruto) {
-    umanjenje = bruto - odbitak;
-  }
+  // Umanjenje po poreskoj kartici
+  const umanjenje = Math.min(bruto - odbitak, 0.0);
 
   //Porez batice...
-  let stvarniPorez = Number(
-    (bruto - (odbitak + umanjenje)) * (8 / 100)
-  ).toFixed(2);
+  const stvarniPorez = Number((bruto - (odbitak + umanjenje)) * (8 / 100));
 
   //Neto plata
-  neto = Number(bruto - doprinosi - stvarniPorez).toFixed(2);
+  const neto = Number(bruto - doprinosi - stvarniPorez).toFixed(2);
 
   //Doprinosi za solidarnost
   let solidarnostDoprinosi = neto * (0.25 / 100);
   let solidarnost = solidarnostDoprinosi.toFixed(2);
 
   //Isplata radniku
-  let stvarnaIsplata = (neto - solidarnostDoprinosi).toFixed(2);
-  let isplata = Number(stvarnaIsplata);
+  let stvarnaIsplata = neto - solidarnostDoprinosi;
 
   //Ukupne obaveze
   let stvarneObaveze = doprinosi + stvarniPorez + solidarnostDoprinosi;
   let obaveze = Number(stvarneObaveze).toFixed(2);
+
+  const submitBruto = (bruto) => {
+    setBruto(bruto);
+  };
+
+  const submitNeto = (neto) => {
+    const noviBruto = ((100 * neto - 8000) / 61).toFixed(2);
+    setBruto(noviBruto);
+  };
+
+  useEffect(() => {
+    netoRef.current.value = neto;
+  }, [neto]);
+
+  useEffect(() => {
+    brutoRef.current.value = bruto;
+  }, [bruto]);
 
   return (
     <div className="max-w-7xl">
@@ -68,13 +78,20 @@ function SalaryCalculator() {
                 {" "}
                 B ={" "}
                 <input
-                  className=""
+                  ref={brutoRef}
                   style={{ background: "lightblue" }}
-                  value={bruto}
+                  defaultValue={bruto}
                   type="text"
-                  onChange={(event) => {
-                    let noviBruto = +event.target.value;
-                    setBruto(noviBruto);
+                  name="bruto"
+                  onBlur={(event) => {
+                    const noviBruto = +event.target.value;
+                    submitBruto(noviBruto);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      const noviBruto = +event.target.value;
+                      submitBruto(noviBruto);
+                    }
                   }}
                 />{" "}
                 KM
@@ -96,8 +113,9 @@ function SalaryCalculator() {
                 D ={" "}
                 <input
                   style={{ background: "#f75640" }}
-                  value={doprinosi}
+                  value={doprinosi.toFixed(2)}
                   type="text"
+                  readOnly
                 />{" "}
                 KM
               </td>
@@ -183,7 +201,9 @@ function SalaryCalculator() {
                 Porez
               </th>
               <td className="px-6 py-4 td-style">
-                P = <input readOnly value={stvarniPorez} type="text" /> KM
+                P ={" "}
+                <input readOnly value={stvarniPorez.toFixed(2)} type="text" />{" "}
+                KM
               </td>
               <td className="px-6 py-4 font-bold">{`P=(B-(O+U))*8%`}</td>
             </tr>
@@ -197,11 +217,19 @@ function SalaryCalculator() {
               <td className="px-6 py-4 td-style">
                 N ={" "}
                 <input
-                  value={neto}
+                  ref={netoRef}
+                  defaultValue={neto}
+                  name="neto"
                   type="text"
-                  onChange={(event) => {
-                    bruto = +event.target.value;
-                    setBruto(bruto);
+                  onBlur={(event) => {
+                    const noviNeto = +event.target.value;
+                    submitNeto(noviNeto);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      const noviNeto = +event.target.value;
+                      submitNeto(noviNeto);
+                    }
                   }}
                 />{" "}
                 KM
@@ -228,7 +256,9 @@ function SalaryCalculator() {
                 Isplata radniku:
               </th>
               <td className="px-6 py-4 td-style">
-                I = <input readOnly value={isplata} type="text" /> KM
+                I ={" "}
+                <input readOnly value={stvarnaIsplata.toFixed(2)} type="text" />{" "}
+                KM
               </td>
               <td className="px-6 py-4 font-bold">I=N-S</td>
             </tr>
