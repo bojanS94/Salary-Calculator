@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function SalaryCalculator() {
   let [bruto, setBruto] = useState(1016.39);
-  let [odbitak, setOdbitak] = useState(1000);
   let [neto, setNeto] = useState(0.0);
 
   //Ukupni doprinosi
@@ -17,6 +16,7 @@ function SalaryCalculator() {
   let nzDprinosi = ((bruto * 0.6) / 100).toFixed(2);
 
   //Licni odbitak
+  let odbitak = 1000;
   let stvarniOdbitak = Math.min(bruto, odbitak);
 
   //Umanjenje po poreskoj kartici
@@ -28,8 +28,7 @@ function SalaryCalculator() {
   let porez = stvarniPorez.toFixed(2);
 
   //Neto plata
-  let stvarniNeto = +(bruto - doprinosi - porez);
-  neto = stvarniNeto.toFixed(2);
+  let stvarniNeto = +(bruto - doprinosi - porez).toFixed(2);
 
   //Doprinosi za solidarnost
   let solidarnostDoprinosi = neto * (0.25 / 100);
@@ -68,7 +67,10 @@ function SalaryCalculator() {
                   value={bruto}
                   type="text"
                   onChange={(event) => {
-                    setBruto(event.target.value);
+                    let noviBruto = +event.target.value;
+                    let noviNeto = +event.target.value;
+                    setBruto(noviBruto);
+                    setNeto(noviNeto);
                   }}
                 />{" "}
                 KM
@@ -153,15 +155,7 @@ function SalaryCalculator() {
                 Lični odbitak
               </th>
               <td className="px-6 py-4 td-style">
-                O ={" "}
-                <input
-                  value={stvarniOdbitak}
-                  type="text"
-                  onChange={(event) => {
-                    setOdbitak(event.target.value);
-                  }}
-                />{" "}
-                KM
+                O = <input readOnly value={stvarniOdbitak} type="text" /> KM
               </td>
               <td className="px-6 py-4 font-bold">{`ako je O>B onda je O=B`}</td>
             </tr>
@@ -202,7 +196,8 @@ function SalaryCalculator() {
                   value={neto}
                   type="text"
                   onChange={(event) => {
-                    setNeto(event.target.value);
+                    let noviNeto = +event.target.value;
+                    setNeto(noviNeto);
                   }}
                 />{" "}
                 KM
