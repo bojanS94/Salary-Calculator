@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function SalaryCalculator() {
   let [bruto, setBruto] = useState(1016.39);
-  let [neto, setNeto] = useState(0.0);
+  let [neto, setNeto] = useState(700);
 
   //Ukupni doprinosi
   let doprinosi = ((bruto * 31) / 100).toFixed(2);
@@ -17,29 +17,35 @@ function SalaryCalculator() {
 
   //Licni odbitak
   let odbitak = 1000;
-  let stvarniOdbitak = Math.min(bruto, odbitak);
+  if (odbitak > bruto) {
+    odbitak = bruto;
+  }
 
   //Umanjenje po poreskoj kartici
-  let umanjenje = Math.min(bruto - stvarniOdbitak, 0.0);
-  if (odbitak + umanjenje > bruto) umanjenje = bruto - odbitak;
+  let umanjenje = Math.min(bruto - odbitak, 0.0);
+  if (odbitak + umanjenje > bruto) {
+    umanjenje = bruto - odbitak;
+  }
 
   //Porez batice...
-  let stvarniPorez = (bruto - (stvarniOdbitak + umanjenje)) * (8 / 100);
-  let porez = stvarniPorez.toFixed(2);
+  let stvarniPorez = Number(
+    (bruto - (odbitak + umanjenje)) * (8 / 100)
+  ).toFixed(2);
 
   //Neto plata
-  neto = +(bruto - doprinosi - porez).toFixed(2);
+  neto = Number(bruto - doprinosi - stvarniPorez).toFixed(2);
 
   //Doprinosi za solidarnost
   let solidarnostDoprinosi = neto * (0.25 / 100);
   let solidarnost = solidarnostDoprinosi.toFixed(2);
 
-  //Ukupne obaveze
-  let obaveze = Number(doprinosi + porez + solidarnostDoprinosi).toFixed(2);
-
   //Isplata radniku
-  let stvarnaIsplata = Number(neto - solidarnostDoprinosi);
-  let isplata = stvarnaIsplata.toFixed(2);
+  let stvarnaIsplata = (neto - solidarnostDoprinosi).toFixed(2);
+  let isplata = Number(stvarnaIsplata);
+
+  //Ukupne obaveze
+  let stvarneObaveze = doprinosi + stvarniPorez + solidarnostDoprinosi;
+  let obaveze = Number(stvarneObaveze).toFixed(2);
 
   return (
     <div className="max-w-7xl">
@@ -51,10 +57,10 @@ function SalaryCalculator() {
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"></thead>
           <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Bruto plata
               </th>
@@ -67,7 +73,7 @@ function SalaryCalculator() {
                   value={bruto}
                   type="text"
                   onChange={(event) => {
-                    const noviBruto = +event.target.value;
+                    let noviBruto = +event.target.value;
                     setBruto(noviBruto);
                   }}
                 />{" "}
@@ -78,10 +84,10 @@ function SalaryCalculator() {
                 {`B=N+D+P, ako je N<=(O+U)*0.69, onda B=N/0.69, ako je N>(O+U)*0.69, onda B=(N-(O+U)*0.08)/0.61`}
               </td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Ukupni doprinosi
               </th>
@@ -97,10 +103,10 @@ function SalaryCalculator() {
               </td>
               <td className="px-6 py-4 font-bold">D=B*31%</td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Doprinosi za PIO
               </th>
@@ -109,10 +115,10 @@ function SalaryCalculator() {
               </td>
               <td className="px-6 py-4 font-bold">PIO-18.5%</td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Doprinosi za ZDR
               </th>
@@ -121,10 +127,10 @@ function SalaryCalculator() {
               </td>
               <td className="px-6 py-4 font-bold">ZDR-10.2%</td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Doprinosi za DJ
               </th>
@@ -133,10 +139,10 @@ function SalaryCalculator() {
               </td>
               <td className="px-6 py-4 font-bold">DJ-1.70%</td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Doprinosi za NZ
               </th>
@@ -145,22 +151,22 @@ function SalaryCalculator() {
               </td>
               <td className="px-6 py-4 font-bold">NZ-0.6%</td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Lični odbitak
               </th>
               <td className="px-6 py-4 td-style">
-                O = <input readOnly value={stvarniOdbitak} type="text" /> KM
+                O = <input readOnly value={odbitak} type="text" /> KM
               </td>
               <td className="px-6 py-4 font-bold">{`ako je O>B onda je O=B`}</td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Umanjenje po poreskoj kartici
               </th>
@@ -169,22 +175,22 @@ function SalaryCalculator() {
               </td>
               <td className="px-6 py-4 font-bold">{`ako je O+U>B onda je U=B-O`}</td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Porez
               </th>
               <td className="px-6 py-4 td-style">
-                P = <input readOnly value={porez} type="text" /> KM
+                P = <input readOnly value={stvarniPorez} type="text" /> KM
               </td>
               <td className="px-6 py-4 font-bold">{`P=(B-(O+U))*8%`}</td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Neto plata:
               </th>
@@ -194,18 +200,18 @@ function SalaryCalculator() {
                   value={neto}
                   type="text"
                   onChange={(event) => {
-                    let noviNeto = +event.target.value;
-                    setNeto(noviNeto);
+                    bruto = +event.target.value;
+                    setBruto(bruto);
                   }}
                 />{" "}
                 KM
               </td>
               <td className="px-6 py-4 font-bold">N=B-D-P</td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Doprinos za solidarnost:
               </th>
@@ -214,10 +220,10 @@ function SalaryCalculator() {
               </td>
               <td className="px-6 py-4 font-bold">S=N*0.25%</td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 Isplata radniku:
               </th>
@@ -226,7 +232,7 @@ function SalaryCalculator() {
               </td>
               <td className="px-6 py-4 font-bold">I=N-S</td>
             </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr className="bg-gray-800 text-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
